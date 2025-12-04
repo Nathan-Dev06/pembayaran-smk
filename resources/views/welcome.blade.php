@@ -46,15 +46,14 @@
         <p>Hai, <b>{{ Auth::user()->name }}</b></p>
 
         {{-- 🔥 Redirect dashboard otomatis sesuai role --}}
-        @if(Auth::user()->role == 'admin')
+        @if(Auth::user()->role === 'admin')
             <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-        @elseif(Auth::user()->role == 'siswa')
+        @elseif(Auth::user()->role === 'siswa')
             <a href="{{ route('siswa.dashboard') }}">Dashboard Siswa</a>
-        @elseif(Auth::user()->role == 'pemilik')
+        @elseif(Auth::user()->role === 'pemilik')
             <a href="{{ route('pemilik.dashboard') }}">Dashboard Pemilik</a>
         @endif
 
-        {{-- 🔥 Tombol Logout --}}
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit">Logout</button>

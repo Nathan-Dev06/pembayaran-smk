@@ -28,39 +28,28 @@ class AuthenticatedSessionController extends Controller
     public function store(Request $request): RedirectResponse
 {
     $request->validate([
-        'email' => ['required', 'string', 'email'],
-        'password' => ['required', 'string'],
+        'nis_nip' => 'required|string',
+        'password' => 'required|string',
     ]);
 
-    $remember = $request->boolean('remember');
-
-    if (! Auth::attempt($request->only('email', 'password'), $remember)) {
-        throw ValidationException::withMessages([
-            'email' => __('Email atau password salah.'),
-        ]);
+    if (!Auth::attempt($request->only('nis_nip', 'password'), $request->boolean('remember'))) {
+        return back()->withErrors([
+            'nis_nip' => 'NIS/NIP atau password salah.',
+        ])->onlyInput('nis_nip');
     }
 
     $request->session()->regenerate();
 
-    // 🔥 Redirect berdasarkan role
-    $user = Auth::user();
+    $role = Auth::user()->role;
 
-    if ($user->role === 'admin') {
+    if ($role === 'admin') {
         return redirect()->route('admin.dashboard');
-    }
-
-    if ($user->role === 'siswa') {
+    } elseif ($role === 'pemilik') {
+        return redirect()->route('pemilik.dashboard');
+    } else {
         return redirect()->route('siswa.dashboard');
     }
-
-    if ($user->role === 'pemilik') {
-        return redirect()->route('pemilik.dashboard');
-    }
-
-    // Default jika tidak ada role
-    return redirect('/dashboard');
 }
-
 
     /**
      * Destroy an authenticated session.

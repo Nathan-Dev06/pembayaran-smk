@@ -4,24 +4,29 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| PUBLIC (Belum Login)
 |--------------------------------------------------------------------------
 */
 
-// Halaman utama
+// Login Manual (tanpa Breeze)
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Splash Screen
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('splash');
+})->name('splash');
 
-// Dashboard default Breeze (khusus jika tidak pakai role)
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Profile (Breeze)
+/*
+|--------------------------------------------------------------------------
+| PROFILE
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -30,37 +35,31 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Dashboard Berdasarkan Role
+| DASHBOARD BERDASARKAN ROLE
 |--------------------------------------------------------------------------
 */
 
-// Dashboard Siswa
-Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/siswa/dashboard', function () {
-        return view('siswa.dashboard');
-    })->name('siswa.dashboard');
-});
+// Siswa
+Route::middleware(['auth', 'role:siswa'])->get('/siswa/dashboard', function () {
+    return view('siswa.dashboard');
+})->name('siswa.dashboard');
 
-// Dashboard Admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
+// Admin
+Route::middleware(['auth', 'role:admin'])->get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
 
-// Dashboard Pemilik
-Route::middleware(['auth', 'role:pemilik'])->group(function () {
-    Route::get('/pemilik/dashboard', function () {
-        return view('pemilik.dashboard');
-    })->name('pemilik.dashboard');
-});
+// Pemilik
+Route::middleware(['auth', 'role:pemilik'])->get('/pemilik/dashboard', function () {
+    return view('pemilik.dashboard');
+})->name('pemilik.dashboard');
+
 
 /*
 |--------------------------------------------------------------------------
-| CRUD Siswa (Admin)
+| CRUD SISWA & TAGIHAN (Admin only)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     // CRUD Siswa
@@ -83,5 +82,3 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
 });
-
-require __DIR__.'/auth.php';

@@ -1,25 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard Pemilik</title>
-</head>
-<body>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Dashboard Pemilik
+        </h2>
+    </x-slot>
 
-    <h1>Dashboard Pemilik</h1>
-    <p>Selamat datang, {{ Auth::user()->name }}</p>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">
+                    Selamat datang, {{ auth()->user()->name }} (Pemilik)!
+                </h3>
 
-    <h3>Menu Pemilik</h3>
-    <ul>
-        <li><a href="#">Laporan Pembayaran (coming soon)</a></li>
-        <li><a href="#">Manajemen Admin (coming soon)</a></li>
+                <p>Ini halaman pemilik.</p>
 
-        <li>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit">Logout</button>
-            </form>
-        </li>
-    </ul>
+                <a href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                   class="text-red-500 underline block mt-4">
+                    Logout
+                </a>
 
-</body>
-</html>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

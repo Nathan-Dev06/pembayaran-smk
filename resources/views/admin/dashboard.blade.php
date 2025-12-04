@@ -1,19 +1,22 @@
-<h2>Dashboard Admin</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Admin</title>
+</head>
+<body>
+    <h1>Dashboard Admin</h1>
 
-<p>Selamat datang, {{ Auth::user()->name }}</p>
+    <p>Selamat datang, {{ auth()->user()->name }} (Admin)</p>
 
-<h3>Menu Admin</h3>
+    <ul>
+        <li><a href="{{ route('admin.siswa.index') }}">Kelola Siswa</a></li>
+        <li><a href="{{ route('admin.tagihan.index') }}">Kelola Tagihan</a></li>
+    </ul>
 
-<ul>
-    <li><a href="{{ route('admin.siswa.index') }}">📘 Data Siswa</a></li>
-    <li><a href="{{ route('admin.tagihan.index') }}">💰 Data Tagihan</a></li>
-    <li><a href="#">💳 Pembayaran (coming soon)</a></li>
-    <li><a href="{{ route('logout') }}"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        🚪 Logout
-    </a></li>
-</ul>
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
 
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
-    @csrf
-</form>
+</body>
+</html>
