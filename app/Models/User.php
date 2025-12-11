@@ -12,6 +12,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'email',   
         'nis_nip',
         'email',      // ← WAJIB TAMBAHKAN INI
         'password',

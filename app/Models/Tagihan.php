@@ -11,10 +11,17 @@ class Tagihan extends Model
 
     protected $fillable = [
         'siswa_id',
+<<<<<<< HEAD
         'bulan',
         'tahun',
         'nominal',
         'status',
+=======
+        'jenis_tagihan',
+        'jumlah',
+        'status',
+        'tanggal',
+>>>>>>> 26eb881691a1068e82aaade1ae7d22475a69507c
     ];
 
     public function siswa()
