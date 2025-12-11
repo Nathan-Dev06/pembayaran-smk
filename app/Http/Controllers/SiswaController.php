@@ -35,17 +35,20 @@ class SiswaController extends Controller
 
         // Buat user baru dulu
         $user = User::create([
-            'name' => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make('password'), // password default
-            'role' => 'siswa'
-        ]);
+             'nis_nip' => $request->nis,   // ← tambahkan ini
+              'name' => $request->nama,
+              'email' => $request->email,
+              'password' => Hash::make('password'),
+              'role' => 'siswa'
+]);
+
 
         // Buat data siswa
         Siswa::create([
             'nis' => $request->nis,
             'user_id' => $user->id,
             'nama' => $request->nama,
+             'email' => $request->email,
             'kelas' => $request->kelas,
             'alamat' => $request->alamat,
         ]);
